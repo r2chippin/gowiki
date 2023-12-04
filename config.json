@@ -1,0 +1,6 @@
+{
+  "targetDirectory": null,
+  "logLevel": "info",
+  "maxRetries": 3,
+  "timeoutSeconds": 10
+}
