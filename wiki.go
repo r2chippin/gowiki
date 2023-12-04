@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	model "gowiki/Models"
+	model "gowiki/models"
 	"os"
 )
 
