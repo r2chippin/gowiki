@@ -3,7 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"gowiki/controller"
 	model "gowiki/models"
+	"log"
+	"net/http"
 	"os"
 )
 
@@ -15,12 +18,14 @@ type Config struct {
 	TimeoutSeconds  int    `json:"timeoutSeconds"`
 }
 
+var config Config
+
 func main() {
 	configData, err := os.ReadFile("config.json")
 	if err != nil {
 		panic(err)
 	}
-	var config Config
+
 	err = json.Unmarshal(configData, &config)
 	if err != nil {
 		panic(err)
@@ -38,4 +43,9 @@ func main() {
 	}
 	p2, _ := model.LoadPage("TestPage", config.TargetDirectory)
 	fmt.Println(string(p2.Body))
+
+	http.HandleFunc("/view/", func(w http.ResponseWriter, r *http.Request) {
+		controller.ViewHandler(w, r, config.TargetDirectory)
+	})
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
