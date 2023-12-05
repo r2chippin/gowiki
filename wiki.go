@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"gowiki/controller"
+	"html/template"
 	"log"
 	"net/http"
 	"os"
@@ -36,16 +37,17 @@ func main() {
 	fmt.Println("Max Retries:", config.MaxRetries)
 	fmt.Println("Timeout Seconds:", config.TimeoutSeconds)
 
+	var templates = template.Must(template.ParseFiles("./tmpl/edit.html", "./tmpl/view.html"))
+
 	http.HandleFunc("/view/", func(w http.ResponseWriter, r *http.Request) {
-		controller.ViewHandler(w, r, config.TargetDirectory)
+		controller.ViewHandler(w, r, config.TargetDirectory, templates)
 	})
 	http.HandleFunc("/edit/", func(w http.ResponseWriter, r *http.Request) {
-		controller.EditHandler(w, r, config.TargetDirectory)
+		controller.EditHandler(w, r, config.TargetDirectory, templates)
 	})
-	/*
-		http.HandleFunc("/save/", func(w http.ResponseWriter, r *http.Request) {
-			controller.SaveHandler(w, r, config.TargetDirectory)
-		})
-	*/
+	http.HandleFunc("/save/", func(w http.ResponseWriter, r *http.Request) {
+		controller.SaveHandler(w, r, config.TargetDirectory)
+	})
+
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

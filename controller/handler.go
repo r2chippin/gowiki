@@ -1,37 +1,45 @@
 package controller
 
 import (
-	"fmt"
 	model "gowiki/models"
+	"html/template"
 	"net/http"
 )
 
-// ViewHandler sad
-func ViewHandler(w http.ResponseWriter, r *http.Request, td string) {
-	title := r.URL.Path[len("/view/"):]
-	p, err := model.LoadPage(title, td)
+func renderTemplate(w http.ResponseWriter, tmplName string, p *model.Page, tmpl *template.Template) {
+	err := tmpl.ExecuteTemplate(w, tmplName+".html", p)
 	if err != nil {
-		p = &model.Page{Title: title}
-	}
-	_, err = fmt.Fprintf(w, "<h1>%s</h1>\n<div>%s</div>", p.Title, p.Body)
-	if err != nil {
-		panic(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
 
-func EditHandler(w http.ResponseWriter, r *http.Request, td string) {
+func ViewHandler(w http.ResponseWriter, r *http.Request, td string, tmpl *template.Template) {
+	title := r.URL.Path[len("/view/"):]
+	p, err := model.LoadPage(title, td)
+	if err != nil {
+		http.Redirect(w, r, "/edit/"+title, http.StatusFound)
+		return
+	}
+	renderTemplate(w, "view", p, tmpl)
+}
+
+func EditHandler(w http.ResponseWriter, r *http.Request, td string, tmpl *template.Template) {
 	title := r.URL.Path[len("/view/"):]
 	p, err := model.LoadPage(title, td)
 	if err != nil {
 		p = &model.Page{Title: title}
 	}
-	_, err = fmt.Fprintf(w, "<h1>Editing %s</h1>"+
-		"<form action=\"/save/%s\" method=\"POST\">"+
-		"<textarea name=\"body\">%s</textarea><br>"+
-		"<input type=\"submit\" value=\"Save\">"+
-		"</form>",
-		p.Title, p.Title, p.Body)
+	renderTemplate(w, "edit", p, tmpl)
+}
+
+func SaveHandler(w http.ResponseWriter, r *http.Request, td string) {
+	title := r.URL.Path[len("/save/"):]
+	body := r.FormValue("body")
+	p := &model.Page{Title: title, Body: []byte(body)}
+	err := p.Save(td)
 	if err != nil {
-		panic(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
+	http.Redirect(w, r, "/view/"+title, http.StatusFound)
 }
