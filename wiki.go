@@ -8,11 +8,15 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"regexp"
 )
 
 // Config contains some cfg will be used
 type Config struct {
+	Name            string `json:"name"`
+	Address         string `json:"address"`
 	TargetDirectory string `json:"targetDirectory"`
+	SafePath        string `json:"safePath"`
 	LogLevel        string `json:"logLevel"`
 	MaxRetries      int    `json:"maxRetries"`
 	TimeoutSeconds  int    `json:"timeoutSeconds"`
@@ -31,23 +35,26 @@ func main() {
 		panic(err)
 	}
 	// Show all info
-	fmt.Println("Server is starting...")
+	fmt.Println(config.Name + " is starting...")
+	fmt.Println("Address:", config.Address)
 	fmt.Println("Target Directory:", config.TargetDirectory)
+	fmt.Println("Safe Path:", config.SafePath)
 	fmt.Println("Log Level:", config.LogLevel)
 	fmt.Println("Max Retries:", config.MaxRetries)
 	fmt.Println("Timeout Seconds:", config.TimeoutSeconds)
 
 	var templates = template.Must(template.ParseFiles("./tmpl/edit.html", "./tmpl/view.html"))
+	var validPath = regexp.MustCompile(config.SafePath)
 
 	http.HandleFunc("/view/", func(w http.ResponseWriter, r *http.Request) {
-		controller.ViewHandler(w, r, config.TargetDirectory, templates)
+		controller.ViewHandler(w, r, config.TargetDirectory, templates, validPath)
 	})
 	http.HandleFunc("/edit/", func(w http.ResponseWriter, r *http.Request) {
-		controller.EditHandler(w, r, config.TargetDirectory, templates)
+		controller.EditHandler(w, r, config.TargetDirectory, templates, validPath)
 	})
 	http.HandleFunc("/save/", func(w http.ResponseWriter, r *http.Request) {
-		controller.SaveHandler(w, r, config.TargetDirectory)
+		controller.SaveHandler(w, r, config.TargetDirectory, validPath)
 	})
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(config.Address, nil))
 }

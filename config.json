@@ -1,5 +1,8 @@
 {
-  "targetDirectory": null,
+  "name": "TestWiki",
+  "address": ":8080",
+  "targetDirectory": "./Data",
+  "safePath": "^/(edit|save|view)/([a-zA-Z0-9]+)$",
   "logLevel": "info",
   "maxRetries": 3,
   "timeoutSeconds": 10
