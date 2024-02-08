@@ -1,6 +1,6 @@
 # gowikiEvo
 
-A Refactored Version of [Writing Web Applications - The Go Programming Language](https://go.dev/doc/articles/wiki/) Using Gin, Gorm, MySQL, and HTMX
+A Refactored Version of [Writing Web Applications - The Go Programming Language](https://go.dev/doc/articles/wiki/) Using Gin, Gorm, MySQL, and htmx
 
 ## Description
 
@@ -9,13 +9,13 @@ This project is a refactored version of the tutorial [Writing Web Applications -
 - [Gin](https://github.com/gin-gonic/gin): A web framework for Go that provides a fast and flexible way to build web applications.
 - [Gorm](https://github.com/go-gorm/gorm): A powerful ORM (Object-Relational Mapping) library for Go, which simplifies database operations.
 - MySQL: A popular open-source relational database management system.
-- [HTMX](https://htmx.org/): A JavaScript library that allows you to create web pages with dynamic and interactive features using HTML attributes.
+- [htmx](https://htmx.org/): A JavaScript library that allows you to create web pages with dynamic and interactive features using HTML attributes.
 
 ## Features
 
 - Web interface for creating and editing wiki pages.
 - Persistent storage of wiki pages in a MySQL database.
-- Real-time updates using HTMX for seamless and interactive user experience.
+- Using HTMX for AJAX requests.
 
 ## Installation
 
@@ -33,7 +33,7 @@ To run this project locally, follow these steps:
    go mod download
    ```
 
-3. Set up the MySQL database and configure the connection in the application.
+3. Set up the MySQL database and configure the connection in the `congfig.json` file. You can check the `configSample.json` to get a template.
 
 4. Run the application:
 
