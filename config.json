@@ -1,5 +1,0 @@
-{
-  "name": "TestWiki",
-  "port": ":8080",
-  "db": "root:*Qwt020925@tcp(localhost:3306)/wiki?charset=utf8mb4&parseTime=True&loc=Local"
-}
