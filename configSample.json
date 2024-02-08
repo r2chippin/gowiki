@@ -1,0 +1,5 @@
+{
+  "name": "TestWiki",
+  "port": ":8080",
+  "db": "example:example@tcp(localhost:3306)/example?charset=utf8mb4&parseTime=True&loc=Local"
+}
