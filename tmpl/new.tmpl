@@ -1,0 +1,13 @@
+<script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+<h1>Creating {{.Title}}</h1>
+
+<form hx-post="/wiki/create/{{.Title}}" hx-trigger="submit" hx-redirect="/wiki/view/{{.Title}}">
+    <div>
+        <label>
+            <textarea name="content" rows="20" cols="80">{{printf "%s" .Content}}</textarea>
+        </label>
+    </div>
+    <div>
+        <input type="submit" value="Save" hx-redirect="/wiki/view/{{.Title}}">
+    </div>
+</form>
