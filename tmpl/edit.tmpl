@@ -1,0 +1,20 @@
+<script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+
+<h1>Editing {{.Title}}</h1>
+
+<form hx-patch="/wiki/update/{{.Title}}" hx-trigger="submit" hx-redirect="https://bilibili.com">
+    <div>
+        <label>
+            <textarea name="content" rows="20" cols="80">{{printf "%s" .Content}}</textarea>
+        </label>
+    </div>
+    <div>
+        <input type="submit" value="Save">
+    </div>
+</form>
+
+<div>
+    <button hx-delete="/wiki/delete/{{.Title}}" hx-trigger="click">
+        Delete
+    </button>
+</div>

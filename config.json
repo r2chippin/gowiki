@@ -1,9 +1,5 @@
 {
   "name": "TestWiki",
-  "address": ":8080",
-  "targetDirectory": "./Data",
-  "safePath": "^/(edit|save|view)/([a-zA-Z0-9]+)$",
-  "logLevel": "info",
-  "maxRetries": 3,
-  "timeoutSeconds": 10
+  "port": ":8080",
+  "db": "root:*Qwt020925@tcp(localhost:3306)/wiki?charset=utf8mb4&parseTime=True&loc=Local"
 }

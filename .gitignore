@@ -1,2 +1,7 @@
-.idea/
-.Data/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+config.json
+.idea
